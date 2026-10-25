@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b10">
+  <meta name="description" content="استوديو الأنمي — أنشئ مشاريع الأنمي الأصلية ونظّمها.">
+  <title>استوديو الأنمي</title>
+
+  <style>
+    :root {
+      --bg: #0b0b10;
+      --panel: #14141d;
+      --panel-light: #1c1c29;
+      --border: #2b2b3a;
+      --text: #f4f2ff;
+      --muted: #9695aa;
+      --accent: #a78bfa;
+      --accent-dark: #7555d9;
+      --danger: #ff7185;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top, #19152b 0%, transparent 45%),
+        var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      width: 100%;
+      max-width: 1200px;
+      min-height: 100vh;
+      margin: auto;
+      padding-bottom: 88px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(11, 11, 16, 0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      border-radius: 13px;
+      color: white;
+      font-size: 23px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-dark), #d28bfa);
+      box-shadow: 0 0 24px #a78bfa22;
+    }
+
+    .brand h1 { margin: 0; font-size: 17px; }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      color: var(--text);
+      background: var(--panel);
+    }
+
+    main { padding: 20px 16px; }
+
+    .welcome {
+      position: relative;
+      overflow: hidden;
+      padding: 24px 20px;
+      border: 1px solid #54417d;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 90% 10%, #8b5cf644, transparent 35%),
+        linear-gradient(135deg, #211832, #13121d 70%);
+    }
+
+    .eyebrow {
+      color: #c4b5fd;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .welcome h2 {
+      max-width: 500px;
+      margin: 12px 0;
+      font-size: clamp(27px, 6vw, 40px);
+      line-height: 1.35;
+    }
+
+    .welcome p {
+      max-width: 500px;
+      color: #c0bdd1;
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .primary-button, .secondary-button {
+      min-height: 44px;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .primary-button {
+      border: 0;
+      color: #100d19;
+      background: linear-gradient(135deg, #c4b5fd, #a78bfa);
+    }
+
+    .secondary-button {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--panel-light);
+    }
+
+    .welcome .primary-button { margin-top: 8px; }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 26px 0 14px;
+    }
+
+    .section-heading h2 { margin: 0; font-size: 18px; }
+    .muted { color: var(--muted); font-size: 12px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .stat, .card {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 23px;
+    }
+
+    .stat span { color: var(--muted); font-size: 11px; }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 12px;
+    }
+
+    .project-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, #191923, #111118);
+    }
+
+    .project-cover {
+      display: grid;
+      place-items: center;
+      min-height: 115px;
+      margin-bottom: 14px;
+      border: 1px solid #39304d;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 50% 30%, #8b5cf633, transparent 60%),
+        #111019;
+      font-size: 36px;
+    }
+
+    .project-card h3 {
+      margin: 0 0 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .project-card p {
+      min-height: 36px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .project-actions button { flex: 1; }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 28px 16px;
+      border: 1px dashed #444154;
+      border-radius: var(--radius);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .workspace { display: grid; gap: 12px; }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .field label { color: #d5d2e5; font-size: 13px; }
+
+    .field input, .field textarea, .field select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      outline: none;
+      color: var(--text);
+      background: #0e0e15;
+    }
+
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--accent);
+    }
+
+    .field textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.9;
+    }
+
+    .notice {
+      padding: 12px;
+      border: 1px solid #4b3c69;
+      border-radius: 12px;
+      color: #d7cafa;
+      background: #211832;
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 8px max(8px, env(safe-area-inset-right))
+        calc(8px + env(safe-area-inset-bottom))
+        max(8px, env(safe-area-inset-left));
+      border-top: 1px solid var(--border);
+      background: rgba(15, 15, 23, 0.97);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-button {
+      display: grid;
+      justify-items: center;
+      gap: 4px;
+      min-height: 52px;
+      border: 0;
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 10px;
+    }
+
+    .nav-button span { font-size: 20px; }
+
+    .nav-button.active {
+      color: #c4b5fd;
+      background: #a78bfa12;
+    }
+
+    .hidden { display: none !important; }
+
+    .page-title { margin: 4px 0 18px; font-size: 25px; }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .small-danger {
+      border-color: #60303b;
+      color: #ff9aaa;
+    }
+
+    html[dir="rtl"] .eyebrow { letter-spacing: 0; }
+
+    @media (min-width: 760px) {
+      main { padding: 28px; }
+      header { padding: 18px 28px; }
+      .welcome { padding: 34px; }
+      .workspace { grid-template-columns: 1fr 1fr; }
+
+      .bottom-nav {
+        right: 50%;
+        left: 50%;
+        width: min(700px, 100%);
+        transform: translateX(50%);
+        border: 1px solid var(--border);
+        border-bottom: 0;
+        border-radius: 18px 18px 0 0;
+      }
+
+      html[dir="ltr"] .bottom-nav { transform: translateX(-50%); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1 data-i18n="brand">استوديو الأنمي</h1>
+          <p data-i18n="tagline">قصتك. عالمك الخاص.</p>
+        </div>
+      </div>
+      <button class="icon-button" id="settingsShortcut"
+        aria-label="فتح الإعدادات" data-i18n-aria="settings">⚙</button>
+    </header>
+
+    <main>
+      <section id="homePage">
+        <div class="welcome">
+          <div class="eyebrow" data-i18n="eyebrow">مساحة إبداعية</div>
+          <h2 data-i18n="welcomeTitle">حوّل عالم الأنمي الذي تتخيله إلى مشروعك الخاص.</h2>
+          <p data-i18n="welcomeDescription">
+            نظّم قصصك، وطوّر شخصياتك، وخطّط لمشاهدك، وجهّز مشاريع الأنمي الأصلية في مساحة واحدة.
+          </p>
+          <button class="primary-button" id="createFirstProject" data-i18n="createProject">
+            + إنشاء مشروع
+          </button>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <strong id="projectCount">0</strong>
+            <span data-i18n="projects">المشاريع</span>
+          </div>
+          <div class="stat">
+            <strong id="storyCount">0</strong>
+            <span data-i18n="storiesSaved">القصص المحفوظة</span>
+          </div>
+          <div class="stat">
+            <strong id="characterCount">0</strong>
+            <span data-i18n="characters">الشخصيات</span>
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <h2 data-i18n="yourProjects">مشاريعك</h2>
+          <button class="secondary-button" id="newProjectButton" data-i18n="newButton">
+            + جديد
+          </button>
+        </div>
+        <div class="project-list" id="homeProjects"></div>
+      </section>
+
+      <section id="projectsPage" class="hidden">
+        <h2 class="page-title" data-i18n="yourProjects">مشاريعك</h2>
+        <p class="muted" data-i18n="projectsDescription">لكل مشروع قصته وشخصياته الخاصة.</p>
+        <div class="top-actions">
+          <button class="primary-button" id="newProjectButton2" data-i18n="createProject">
+            + إنشاء مشروع
+          </button>
+        </div>
+        <div class="project-list" id="allProjects"></div>
+      </section>
+
+      <section id="editorPage" class="hidden">
+        <button class="secondary-button" id="backToProjects" data-i18n="back">
+          ← رجوع
+        </button>
+
+        <div class="section-heading">
+          <h2 id="editorTitle">مساحة المشروع</h2>
+          <span class="muted" id="saveStatus">محفوظ محليًا</span>
+        </div>
+
+        <div class="workspace">
+          <div class="card">
+            <h3 data-i18n="projectDetails">تفاصيل المشروع</h3>
+            <div class="field">
+              <label for="projectName" data-i18n="projectName">اسم المشروع</label>
+              <input id="projectName" maxlength="100"
+                placeholder="أدخل عنوان الأنمي" data-i18n-placeholder="projectNamePlaceholder">
+            </div>
+            <div class="field">
+              <label for="projectDescription" data-i18n="synopsis">الملخص</label>
+              <textarea id="projectDescription"
+                placeholder="صف العالم والفكرة الرئيسية..." data-i18n-placeholder="synopsisPlaceholder"></textarea>
+            </div>
+            <button class="primary-button" id="saveProject" data-i18n="saveProject">
+              حفظ المشروع
+            </button>
+          </div>
+
+          <div class="card">
+            <h3 data-i18n="storyDraft">مسودة القصة</h3>
+            <div class="field">
+              <label for="storyDraft" data-i18n="originalStory">القصة الأصلية</label>
+              <textarea id="storyDraft"
+                placeholder="اكتب قصتك هنا. سيُحفظ نصك الأصلي كما كتبته." data-i18n-placeholder="storyPlaceholder"></textarea>
+            </div>
+            <button class="primary-button" id="saveStory" data-i18n="saveStory">
+              حفظ القصة
+            </button>
+            <p class="muted" data-i18n="localDraftNotice">تُحفظ المسودات في المتصفح على هذا الجهاز.</p>
+          </div>
+
+          <div class="card">
+            <h3 data-i18n="characters">الشخصيات</h3>
+            <div class="field">
+              <label for="characterName" data-i18n="characterName">اسم الشخصية</label>
+              <input id="characterName" maxlength="100"
+                placeholder="اسم الشخصية" data-i18n-placeholder="characterNamePlaceholder">
+            </div>
+            <div class="field">
+              <label for="characterDetails" data-i18n="characterDetails">المظهر والقدرات والقيود</label>
+              <textarea id="characterDetails"
+                placeholder="سجّل تفاصيل الشخصية المؤكدة..." data-i18n-placeholder="characterDetailsPlaceholder"></textarea>
+            </div>
+            <button class="primary-button" id="addCharacter" data-i18n="saveCharacter">
+              حفظ الشخصية
+            </button>
+            <div id="characterList"></div>
+          </div>
+
+          <div class="card">
+            <h3 data-i18n="productionRoadmap">خطة الإنتاج</h3>
+            <p class="muted" data-i18n="productionDescription">
+              تدير هذه النسخة الأولى بيانات مشاريعك. تتطلب قراءة الصور وتوليد الأنيميشن ومزامنة الصوت وإخراج الفيديو خدمات متوافقة إضافية.
+            </p>
+            <div class="notice" data-i18n="productionNotice">
+              لا يتم توليد الفيديو في هذه النسخة. تبقى قصتك وملاحظات شخصياتك منفصلة عن أي إنتاج مستقبلي.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="settingsPage" class="hidden">
+        <h2 class="page-title" data-i18n="settings">الإعدادات</h2>
+
+        <div class="card">
+          <h3 data-i18n="languageSettings">لغة التطبيق</h3>
+          <p class="muted" data-i18n="languageDescription">
+            اختر لغة واجهة التطبيق. لا يغيّر هذا الاختيار نصوص قصصك أو أسماء شخصياتك.
+          </p>
+          <div class="field">
+            <label for="languageSelect" data-i18n="interfaceLanguage">لغة الواجهة</label>
+            <select id="languageSelect">
+              <option value="ar">العربية</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3 data-i18n="localStorage">التخزين المحلي</h3>
+          <p class="muted" data-i18n="storageDescription">
+            تُحفظ معلومات المشروع في هذا المتصفح. قد تفقد الوصول إليها إذا حذفت بيانات المتصفح أو انتقلت إلى جهاز آخر. صدّر نسخًا احتياطية بانتظام.
+          </p>
+          <div class="top-actions">
+            <button class="primary-button" id="exportData" data-i18n="exportBackup">
+              تصدير نسخة احتياطية
+            </button>
+            <button class="secondary-button" id="importButton" data-i18n="importBackup">
+              استيراد نسخة احتياطية
+            </button>
+            <input type="file" id="importFile" accept=".json,application/json" class="hidden">
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3 data-i18n="aboutBuild">حول هذه النسخة</h3>
+          <p class="muted" data-i18n="aboutDescription">
+            استوديو الأنمي — مدير مشاريع محلي، النسخة الوظيفية الأولى. لم تُربط خدمات الذكاء الاصطناعي السحابية بعد.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="التنقل الرئيسي" data-i18n-aria="mainNavigation">
+      <button class="nav-button active" data-page="homePage">
+        <span>⌂</span><span data-i18n="home">الرئيسية</span>
+      </button>
+      <button class="nav-button" data-page="projectsPage">
+        <span>▤</span><span data-i18n="projects">المشاريع</span>
+      </button>
+      <button class="nav-button" id="editorNav">
+        <span>✎</span><span data-i18n="workspace">مساحة العمل</span>
+      </button>
+      <button class="nav-button" data-page="settingsPage">
+        <span>⚙</span><span data-i18n="settings">الإعدادات</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "animeStudioData_v1";
+      const LANGUAGE_KEY = "animeStudioLanguage";
+
+      const translations = {
+        ar: {
+          documentTitle: "استوديو الأنمي",
+          description: "استوديو الأنمي — أنشئ مشاريع الأنمي الأصلية ونظّمها.",
+          brand: "استوديو الأنمي",
+          tagline: "قصتك. عالمك الخاص.",
+          settings: "الإعدادات",
+          eyebrow: "مساحة إبداعية",
+          welcomeTitle: "حوّل عالم الأنمي الذي تتخيله إلى مشروعك الخاص.",
+          welcomeDescription: "نظّم قصصك، وطوّر شخصياتك، وخطّط لمشاهدك، وجهّز مشاريع الأنمي الأصلية في مساحة واحدة.",
+          createProject: "+ إنشاء مشروع",
+          projects: "المشاريع",
+          storiesSaved: "القصص المحفوظة",
+          characters: "الشخصيات",
+          yourProjects: "مشاريعك",
+          newButton: "+ جديد",
+          projectsDescription: "لكل مشروع قصته وشخصياته الخاصة.",
+          back: "← رجوع",
+          projectWorkspace: "مساحة المشروع",
+          savedLocally: "محفوظ محليًا",
+          projectDetails: "تفاصيل المشروع",
+          projectName: "اسم المشروع",
+          projectNamePlaceholder: "أدخل عنوان الأنمي",
+          synopsis: "الملخص",
+          synopsisPlaceholder: "صف العالم والفكرة الرئيسية...",
+          saveProject: "حفظ المشروع",
+          storyDraft: "مسودة القصة",
+          originalStory: "القصة الأصلية",
+          storyPlaceholder: "اكتب قصتك هنا. سيُحفظ نصك الأصلي كما كتبته.",
+          saveStory: "حفظ القصة",
+          localDraftNotice: "تُحفظ المسودات في المتصفح على هذا الجهاز.",
+          characterName: "اسم الشخصية",
+          characterNamePlaceholder: "اسم الشخصية",
+          characterDetails: "المظهر والقدرات والقيود",
+          characterDetailsPlaceholder: "سجّل تفاصيل الشخصية المؤكدة...",
+          saveCharacter: "حفظ الشخصية",
+          productionRoadmap: "خطة الإنتاج",
+          productionDescription: "تدير هذه النسخة الأولى بيانات مشاريعك. تتطلب قراءة الصور وتوليد الأنيميشن ومزامنة الصوت وإخراج الفيديو خدمات متوافقة إضافية.",
+          productionNotice: "لا يتم توليد الفيديو في هذه النسخة. تبقى قصتك وملاحظات شخصياتك منفصلة عن أي إنتاج مستقبلي.",
+          languageSettings: "لغة التطبيق",
+          languageDescription: "اختر لغة واجهة التطبيق. لا يغيّر هذا الاختيار نصوص قصصك أو أسماء شخصياتك.",
+          interfaceLanguage: "لغة الواجهة",
+          localStorage: "التخزين المحلي",
+          storageDescription: "تُحفظ معلومات المشروع في هذا المتصفح. قد تفقد الوصول إليها إذا حذفت بيانات المتصفح أو انتقلت إلى جهاز آخر. صدّر نسخًا احتياطية بانتظام.",
+          exportBackup: "تصدير نسخة احتياطية",
+          importBackup: "استيراد نسخة احتياطية",
+          aboutBuild: "حول هذه النسخة",
+          aboutDescription: "استوديو الأنمي — مدير مشاريع محلي، النسخة الوظيفية الأولى. لم تُربط خدمات الذكاء الاصطناعي السحابية بعد.",
+          home: "الرئيسية",
+          workspace: "مساحة العمل",
+          mainNavigation: "التنقل الرئيسي",
+          untitled: "مشروع أنمي بلا عنوان",
+          noSynopsis: "لم يُضف ملخص بعد.",
+          open: "فتح",
+          delete: "حذف",
+          noProjects: "لا توجد مشاريع بعد. أنشئ أول مشروع أنمي لك.",
+          charactersCount: "عدد الشخصيات: {count}",
+          noCharacters: "لا توجد شخصيات محفوظة في هذا المشروع حتى الآن.",
+          noCharacterDetails: "لم تُسجّل تفاصيل.",
+          deleteCharacter: "حذف الشخصية",
+          confirmDeleteProject: 'هل تريد حذف "{name}" وبيانات مشروعه المحلية؟',
+          confirmDeleteCharacter: 'هل تريد حذف الشخصية "{name}"؟',
+          createFirst: "أنشئ مشروعًا أولًا.",
+          projectNameRequired: "يرجى إدخال اسم للمشروع.",
+          projectSaved: "تم حفظ تفاصيل المشروع على هذا الجهاز.",
+          storySaved: "تم حفظ مسودة القصة على هذا الجهاز.",
+          characterNameRequired: "أدخل اسم الشخصية أولًا.",
+          saveFailed: "فشل الحفظ",
+          storageFull: "تعذّر الحفظ. قد تكون مساحة تخزين المتصفح ممتلئة.",
+          exportFailed: "تعذّر تصدير النسخة الاحتياطية.",
+          importConfirm: "سيؤدي الاستيراد إلى استبدال بيانات المشاريع المحلية الحالية. هل تريد المتابعة؟",
+          importSuccess: "تم استيراد النسخة الاحتياطية بنجاح.",
+          importFailed: "تعذّر استيراد النسخة الاحتياطية. تأكد من أنها نسخة JSON صحيحة من استوديو الأنمي.",
+          invalidBackup: "بنية النسخة الاحتياطية غير صحيحة.",
+          invalidRecords: "تحتوي النسخة الاحتياطية على سجلات مشاريع غير صالحة.",
+          languageArabic: "العربية",
+          languageEnglish: "الإنجليزية"
+        },
+        en: {
+          documentTitle: "Anime Studio",
+          description: "Anime Studio — Create and organize your original anime projects.",
+          brand: "Anime Studio",
+          tagline: "YOUR STORY. YOUR UNIVERSE.",
+          settings: "Settings",
+          eyebrow: "Creative workspace",
+          welcomeTitle: "Bring your anime universe to life.",
+          welcomeDescription: "Organize your stories, develop characters, plan scenes, and prepare your original anime projects in one workspace.",
+          createProject: "+ Create a project",
+          projects: "Projects",
+          storiesSaved: "Stories saved",
+          characters: "Characters",
+          yourProjects: "Your projects",
+          newButton: "+ New",
+          projectsDescription: "Each project keeps its own story and characters.",
+          back: "← Back",
+          projectWorkspace: "Project Workspace",
+          savedLocally: "Saved locally",
+          projectDetails: "Project details",
+          projectName: "Project name",
+          projectNamePlaceholder: "Enter your anime title",
+          synopsis: "Synopsis",
+          synopsisPlaceholder: "Describe the world and main idea...",
+          saveProject: "Save project",
+          storyDraft: "Story draft",
+          originalStory: "Original story",
+          storyPlaceholder: "Write your story here. Your original text is preserved when saved.",
+          saveStory: "Save story",
+          localDraftNotice: "Drafts are stored in this browser on this device.",
+          characterName: "Character name",
+          characterNamePlaceholder: "Character name",
+          characterDetails: "Appearance, abilities, limits",
+          characterDetailsPlaceholder: "Record confirmed character details...",
+          saveCharacter: "Save character",
+          productionRoadmap: "Production roadmap",
+          productionDescription: "This first build manages your project data. AI image reading, animation generation, audio synchronization, and video rendering require additional compatible services.",
+          productionNotice: "No video generation is performed by this version. Your story and character notes remain separate from any future generated output.",
+          languageSettings: "App language",
+          languageDescription: "Choose the app interface language. This does not change your story text or character names.",
+          interfaceLanguage: "Interface language",
+          localStorage: "Local storage",
+          storageDescription: "Project information is saved in this browser. Clearing browser data or changing devices may remove access to these records. Export backups regularly.",
+          exportBackup: "Export backup",
+          importBackup: "Import backup",
+          aboutBuild: "About this build",
+          aboutDescription: "Anime Studio — local project manager, first functional build. Cloud AI services are not connected yet.",
+          home: "Home",
+          workspace: "Workspace",
+          mainNavigation: "Main navigation",
+          untitled: "Untitled Anime Project",
+          noSynopsis: "No synopsis added yet.",
+          open: "Open",
+          delete: "Delete",
+          noProjects: "No projects yet. Create your first anime project.",
+          charactersCount: "{count} characters",
+          noCharacters: "No characters saved in this project yet.",
+          noCharacterDetails: "No details recorded.",
+          deleteCharacter: "Delete character",
+          confirmDeleteProject: 'Delete "{name}" and its local project data?',
+          confirmDeleteCharacter: 'Delete character "{name}"?',
+          createFirst: "Create a project first.",
+          projectNameRequired: "Please enter a project name.",
+          projectSaved: "Project details saved on this device.",
+          storySaved: "Story draft saved on this device.",
+          characterNameRequired: "Enter a character name first.",
+          saveFailed: "Save failed",
+          storageFull: "Could not save. Browser storage may be full.",
+          exportFailed: "Could not export the backup.",
+          importConfirm: "Importing will replace current local project data. Continue?",
+          importSuccess: "Backup imported successfully.",
+          importFailed: "Could not import this backup. Check that it is a valid Anime Studio JSON backup.",
+          invalidBackup: "Invalid backup structure.",
+          invalidRecords: "Backup contains invalid project records.",
+          languageArabic: "Arabic",
+          languageEnglish: "English"
+        }
+      };
+
+      const emptyData = () => ({
+        projects: [],
+        nextProjectId: 1
+      });
+
+      function loadData() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return emptyData();
+
+          const parsed = JSON.parse(raw);
+          if (!parsed || !Array.isArray(parsed.projects)) {
+            return emptyData();
+          }
+
+          return {
+            projects: parsed.projects,
+            nextProjectId: Number(parsed.nextProjectId) || 1
+          };
+        } catch (error) {
+          console.error("Could not load saved data:", error);
+          return emptyData();
+        }
+      }
+
+      let data = loadData();
+      let currentProjectId = null;
+      let language = localStorage.getItem(LANGUAGE_KEY) === "en" ? "en" : "ar";
+
+      const $ = id => document.getElementById(id);
+      const t = (key, values = {}) => {
+        let text = translations[language][key] ?? translations.ar[key] ?? key;
+        Object.entries(values).forEach(([name, value]) => {
+          text = text.replaceAll("{" + name + "}", String(value));
+        });
+        return text;
+      };
+
+      function applyLanguage() {
+        document.documentElement.lang = language;
+        document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+        document.title = t("documentTitle");
+        document.querySelector('meta[name="description"]').content = t("description");
+
+        document.querySelectorAll("[data-i18n]").forEach(element => {
+          const key = element.dataset.i18n;
+          if (translations[language][key] !== undefined) {
+            element.textContent = t(key);
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+          element.placeholder = t(element.dataset.i18nPlaceholder);
+        });
+
+        document.querySelectorAll("[data-i18n-aria]").forEach(element => {
+          element.setAttribute("aria-label", t(element.dataset.i18nAria));
+        });
+
+        $("languageSelect").value = language;
+        $("saveStatus").textContent = t("savedLocally");
+
+        if (currentProject()) {
+          $("editorTitle").textContent = currentProject().name || t("projectWorkspace");
+        }
+
+        renderProjects();
+        renderCharacters();
+      }
+
+      function saveData() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          $("saveStatus").textContent = t("savedLocally");
+          return true;
+        } catch (error) {
+          $("saveStatus").textContent = t("saveFailed");
+          alert(t("storageFull"));
+          console.error(error);
+          return false;
+        }
+      }
+
+      function currentProject() {
+        return data.projects.find(
+          project => project.id === currentProjectId
+        ) || null;
+      }
+
+      function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[character]);
+      }
+
+      function showPage(pageId) {
+        const allowed = ["homePage", "projectsPage", "editorPage", "settingsPage"];
+        if (!allowed.includes(pageId)) return;
+
+        allowed.forEach(id => $(id).classList.toggle("hidden", id !== pageId));
+
+        document.querySelectorAll(".nav-button[data-page]").forEach(button => {
+          button.classList.toggle("active", button.dataset.page === pageId);
+        });
+
+        if (pageId === "homePage" || pageId === "projectsPage") {
+          renderProjects();
+        }
+      }
+
+      function makeProject() {
+        const project = {
+          id: data.nextProjectId++,
+          name: t("untitled"),
+          description: "",
+          story: "",
+          characters: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+
+        data.projects.unshift(project);
+
+        if (!saveData()) {
+          data.projects = data.projects.filter(item => item.id !== project.id);
+          return;
+        }
+
+        openProject(project.id);
+      }
+
+      function openProject(id) {
+        const project = data.projects.find(item => item.id === id);
+        if (!project) return;
+
+        currentProjectId = id;
+        $("projectName").value = project.name || "";
+        $("projectDescription").value = project.description || "";
+        $("storyDraft").value = project.story || "";
+        $("editorTitle").textContent = project.name || t("projectWorkspace");
+        renderCharacters();
+        showPage("editorPage");
+      }
+
+      function deleteProject(id) {
+        const project = data.projects.find(item => item.id === id);
+        if (!project) return;
+
+        if (!confirm(t("confirmDeleteProject", { name: project.name }))) {
+          return;
+        }
+
+        const previous = data.projects;
+        data.projects = previous.filter(item => item.id !== id);
+
+        if (!saveData()) {
+          data.projects = previous;
+          return;
+        }
+
+        if (currentProjectId === id) currentProjectId = null;
+        renderProjects();
+      }
+
+      function renderProjects() {
+        const targets = [$("homeProjects"), $("allProjects")];
+
+        $("projectCount").textContent = data.projects.length;
+        $("storyCount").textContent = data.projects.filter(
+          project => (project.story || "").trim()
+        ).length;
+
+        $("characterCount").textContent = data.projects.reduce(
+          (total, project) => total + (project.characters || []).length,
+          0
+        );
+
+        targets.forEach(target => {
+          target.replaceChildren();
+
+          if (data.projects.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "empty";
+            empty.textContent = t("noProjects");
+            target.appendChild(empty);
+            return;
+          }
+
+          data.projects.forEach(project => {
+            const card = document.createElement("article");
+            card.className = "project-card";
+            card.innerHTML = `
+              <div class="project-cover" aria-hidden="true">✦</div>
+              <h3>${escapeHTML(project.name || t("untitled"))}</h3>
+              <p>${escapeHTML(project.description || t("noSynopsis"))}</p>
+              <div class="muted">${t("charactersCount", {
+                count: (project.characters || []).length
+              })}</div>
+              <div class="project-actions">
+                <button class="primary-button" data-open="${project.id}">
+                  ${escapeHTML(t("open"))}
+                </button>
+                <button class="secondary-button small-danger" data-delete="${project.id}">
+                  ${escapeHTML(t("delete"))}
+                </button>
+              </div>
+            `;
+
+            target.appendChild(card);
+          });
+        });
+      }
+
+      function renderCharacters() {
+        const project = currentProject();
+        const list = $("characterList");
+        list.replaceChildren();
+
+        if (!project || !project.characters.length) {
+          const note = document.createElement("p");
+          note.className = "muted";
+          note.textContent = t("noCharacters");
+          list.appendChild(note);
+          return;
+        }
+
+        project.characters.forEach(character => {
+          const item = document.createElement("div");
+          item.className = "card";
+          item.style.marginTop = "10px";
+
+          const title = document.createElement("strong");
+          title.textContent = character.name;
+
+          const details = document.createElement("p");
+          details.className = "muted";
+          details.style.whiteSpace = "pre-wrap";
+          details.textContent = character.details || t("noCharacterDetails");
+
+          const remove = document.createElement("button");
+          remove.className = "secondary-button small-danger";
+          remove.textContent = t("deleteCharacter");
+
+          remove.addEventListener("click", () => {
+            if (!confirm(t("confirmDeleteCharacter", { name: character.name }))) return;
+
+            const previous = [...project.characters];
+            project.characters = project.characters.filter(
+              entry => entry.id !== character.id
+            );
+            project.updatedAt = new Date().toISOString();
+
+            if (!saveData()) {
+              project.characters = previous;
+              return;
+            }
+
+            renderCharacters();
+            renderProjects();
+          });
+
+          item.append(title, details, remove);
+          list.appendChild(item);
+        });
+      }
+
+      $("createFirstProject").addEventListener("click", makeProject);
+      $("newProjectButton").addEventListener("click", makeProject);
+      $("newProjectButton2").addEventListener("click", makeProject);
+
+      $("backToProjects").addEventListener("click", () => {
+        showPage("projectsPage");
+      });
+
+      $("settingsShortcut").addEventListener("click", () => {
+        showPage("settingsPage");
+      });
+
+      $("editorNav").addEventListener("click", () => {
+        if (currentProject()) {
+          openProject(currentProjectId);
+        } else if (data.projects.length) {
+          openProject(data.projects[0].id);
+        } else {
+          alert(t("createFirst"));
+          showPage("homePage");
+        }
+      });
+
+      document.querySelectorAll(".nav-button[data-page]").forEach(button => {
+        button.addEventListener("click", () => showPage(button.dataset.page));
+      });
+
+      document.addEventListener("click", event => {
+        const openButton = event.target.closest("[data-open]");
+        const deleteButton = event.target.closest("[data-delete]");
+
+        if (openButton) openProject(Number(openButton.dataset.open));
+        if (deleteButton) deleteProject(Number(deleteButton.dataset.delete));
+      });
+
+      $("saveProject").addEventListener("click", () => {
+        const project = currentProject();
+        if (!project) return;
+
+        const name = $("projectName").value.trim();
+        if (!name) {
+          alert(t("projectNameRequired"));
+          return;
+        }
+
+        const previous = {
+          name: project.name,
+          description: project.description,
+          updatedAt: project.updatedAt
+        };
+
+        project.name = name;
+        project.description = $("projectDescription").value;
+        project.updatedAt = new Date().toISOString();
+
+        if (!saveData()) {
+          Object.assign(project, previous);
+          return;
+        }
+
+        $("editorTitle").textContent = project.name;
+        renderProjects();
+        alert(t("projectSaved"));
+      });
+
+      $("saveStory").addEventListener("click", () => {
+        const project = currentProject();
+        if (!project) return;
+
+        const previous = project.story;
+        project.story = $("storyDraft").value;
+        project.updatedAt = new Date().toISOString();
+
+        if (!saveData()) {
+          project.story = previous;
+          return;
+        }
+
+        renderProjects();
+        alert(t("storySaved"));
+      });
+
+      $("addCharacter").addEventListener("click", () => {
+        const project = currentProject();
+        if (!project) return;
+
+        const name = $("characterName").value.trim();
+        const details = $("characterDetails").value.trim();
+
+        if (!name) {
+          alert(t("characterNameRequired"));
+          return;
+        }
+
+        const character = {
+          id: Date.now(),
+          name,
+          details
+        };
+
+        project.characters.push(character);
+        project.updatedAt = new Date().toISOString();
+
+        if (!saveData()) {
+          project.characters = project.characters.filter(
+            entry => entry.id !== character.id
+          );
+          return;
+        }
+
+        $("characterName").value = "";
+        $("characterDetails").value = "";
+        renderCharacters();
+        renderProjects();
+      });
+
+      $("exportData").addEventListener("click", () => {
+        try {
+          const fileData = JSON.stringify(data, null, 2);
+          const blob = new Blob([fileData], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+
+          link.href = url;
+          link.download = "anime-studio-backup.json";
+          link.click();
+
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (error) {
+          alert(t("exportFailed"));
+          console.error(error);
+        }
+      });
+
+      $("importButton").addEventListener("click", () => {
+        $("importFile").click();
+      });
+
+      $("importFile").addEventListener("change", async event => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        try {
+          const imported = JSON.parse(await file.text());
+
+          if (!imported || !Array.isArray(imported.projects)) {
+            throw new Error(t("invalidBackup"));
+          }
+
+          const validProjects = imported.projects.every(project =>
+            project &&
+            Number.isFinite(Number(project.id)) &&
+            typeof project.name === "string" &&
+            Array.isArray(project.characters)
+          );
+
+          if (!validProjects) {
+            throw new Error(t("invalidRecords"));
+          }
+
+          if (!confirm(t("importConfirm"))) return;
+
+          const oldData = data;
+          data = {
+            projects: imported.projects,
+            nextProjectId: Math.max(
+              Number(imported.nextProjectId) || 1,
+              ...imported.projects.map(project => Number(project.id) + 1),
+              1
+            )
+          };
+
+          if (!saveData()) {
+            data = oldData;
+            return;
+          }
+
+          currentProjectId = null;
+          renderProjects();
+          showPage("homePage");
+          alert(t("importSuccess"));
+        } catch (error) {
+          alert(t("importFailed"));
+          console.error(error);
+        } finally {
+          event.target.value = "";
+        }
+      });
+
+      $("languageSelect").addEventListener("change", event => {
+        const selected = event.target.value === "en" ? "en" : "ar";
+
+        try {
+          localStorage.setItem(LANGUAGE_KEY, selected);
+        } catch (error) {
+          console.error("Could not save language preference:", error);
+        }
+
+        language = selected;
+        applyLanguage();
+      });
+
+      applyLanguage();
+      renderProjects();
+    })();
+  </script>
+</body>
+</html>
